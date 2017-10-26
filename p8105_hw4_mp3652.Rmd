@@ -5,12 +5,6 @@ date: "October 24, 2017"
 output: html_document
 ---
 
-install.packages("devtools")
-install.packages("github")
-
-install.packages("hadley/pillar")
-install.packages("ropenscilabs/skimr")
-
 ```{r load_packages}
 library(tidyverse)
 library(data.table)
@@ -56,12 +50,12 @@ length(unique(pups_data$id))
 ##############
 ears = pups_data %>%            
   select(-c(3:5)) %>% 
-  group_by(id) %>% 
+  group_by(litter_number) %>% 
   mutate(
     "avg_pd_ears" = round(mean(pd_ears), 1)
     ) %>% 
   select(-c(2)) %>% 
-  filter(!duplicated(id))
+  filter(!duplicated(litter_number))
 ears
 
 
@@ -70,12 +64,12 @@ ears
 ##############
 eyes = pups_data %>%                            
   select(-c(2, 4, 5)) %>% 
-  group_by(id) %>% 
+  group_by(litter_number) %>% 
   mutate(
     "avg_pd_eyes" = round(mean(pd_eyes), 1)
     ) %>% 
   select(-c(2)) %>% 
-  filter(!duplicated(id))
+  filter(!duplicated(litter_number))
 eyes
 
 
@@ -84,12 +78,12 @@ eyes
 ##############
 pivot = pups_data %>%
   select(-c(2, 3, 5)) %>% 
-  group_by(id) %>% 
+  group_by(litter_number) %>% 
   mutate(
     "avg_pd_pivot" = round(mean(pd_pivot), 1)
     ) %>% 
   select(-c(2)) %>% 
-  filter(!duplicated(id))
+  filter(!duplicated(litter_number))
 pivot
 
 
@@ -98,26 +92,58 @@ pivot
 ##############
 walk = pups_data %>%
   select(-c(2:4)) %>% 
-  group_by(id) %>% 
+  group_by(litter_number) %>% 
   mutate(
     "avg_pd_walk" = round(mean(pd_walk), 1)
     ) %>% 
   select(-c(2)) %>% 
-  filter(!duplicated(id))
+  filter(!duplicated(litter_number))
 walk
 
-pups = data.frame(ears, pivot, walk, eyes) %>%   #merge() doesn't work here b/c we are joining four df's, not just two
-  select(-c(3,5,7))
+pups = data.frame(ears, pivot, walk, eyes) %>% #no merge() b/c joining 4 df's, not 2
+  mutate("id" = labels(litter_number)) %>%
+  select(-c(1,3,5,7)) 
 pups
-
-#########################################################################################################
-
-#The collaborator (Josie) will create a plot showing the distribution of post-natal days for each developmental landmark.
-#########################################################################################################
 ```
+############################################################################
+The collaborator (Josie) will create a plot showing the distribution of post-natal days for each developmental landmark.
+############################################################################
+
+
 The original pups data set contained ___ observations; however, there were only `r length(unique(pups_data$id))` distinct litter numbers.  As such, we assumed that the multiple entries for each pup were a result of multiple observers, each of whom uniquely recorded developmental landmarks. 
 
 unique litter numbers.  As such,  we assumed that developmental landmarks were recorded by multiple observers as reflected by the multiple entries and marginal differences in post-natal day.
+
+
+############################################################################
+
+
+
+
+
+
+
+############################################################################
+
+
+############################################################################
+In Problems 1 and 2, I worked with Josie Alford (UNI: jma2249).
+
+### Problem 1
+
+#The GitHub repo containing our solution to this problem is [here](https://github.com/meoak/p8105_hw4_mp3652)
+
+
+### Problem 2
+
+#The GitHub repo containing the solution to this problem is [here](https://github.com/josiealford14/p8105_hw4_jma2249)
+
+
+### Problem 3
+
+#My personal website is [here](http://meoakplace.com) ###need to set this up
+###################################################################
+
 
 ###################################
 

@@ -4,30 +4,153 @@ author: "MeOak Place"
 date: "October 24, 2017"
 output: html_document
 ---
-HIIIIIIIIIIIII!!!!!!!!
 
-pups, babe, pups
+install.packages("devtools")
+install.packages("github")
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+install.packages("hadley/pillar")
+install.packages("ropenscilabs/skimr")
+
+```{r load_packages}
+library(tidyverse)
+library(data.table)
+library(dplyr)
+library(devtools)
+library(DT)
+library(forcats)
+library(ggplot2)
+library(ggridges)
+library(ggthemes)
+library(haven)
+library(janitor)
+library(knitr)
+library(magrittr)
+library(readr)
+library(readxl)
+library(reshape2)
 ```
 
-## R Markdown
+###################################
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Problem 1:  Pups
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+###################################
 
-```{r cars}
-summary(cars)
+getwd()
+names(pups_data) #lists variable names
+clean_names(pups_data) #lowercases variable names and tibbles data
+tail(pups_data, 5) #last five
+head(pups_data) #first six
+
+```{r importing data}
+pups_data = read_csv(file = "./data/FAS_pups.csv") %>% 
+  clean_names() %>% 
+  rename(id = litter_number) %>% 
+  select(-c(2)) %>%                             #removing sex column as key is n/a
+  arrange(id)
+pups_data
+
+length(unique(pups_data$id))
+
+##############
+# avg ears
+##############
+ears = pups_data %>%            
+  select(-c(3:5)) %>% 
+  group_by(id) %>% 
+  mutate(
+    "avg_pd_ears" = round(mean(pd_ears), 1)
+    ) %>% 
+  select(-c(2)) %>% 
+  filter(!duplicated(id))
+ears
+
+
+##############
+# avg eyes
+##############
+eyes = pups_data %>%                            
+  select(-c(2, 4, 5)) %>% 
+  group_by(id) %>% 
+  mutate(
+    "avg_pd_eyes" = round(mean(pd_eyes), 1)
+    ) %>% 
+  select(-c(2)) %>% 
+  filter(!duplicated(id))
+eyes
+
+
+##############
+# avg pivot
+##############
+pivot = pups_data %>%
+  select(-c(2, 3, 5)) %>% 
+  group_by(id) %>% 
+  mutate(
+    "avg_pd_pivot" = round(mean(pd_pivot), 1)
+    ) %>% 
+  select(-c(2)) %>% 
+  filter(!duplicated(id))
+pivot
+
+
+##############
+# avg walk
+##############
+walk = pups_data %>%
+  select(-c(2:4)) %>% 
+  group_by(id) %>% 
+  mutate(
+    "avg_pd_walk" = round(mean(pd_walk), 1)
+    ) %>% 
+  select(-c(2)) %>% 
+  filter(!duplicated(id))
+walk
+
+pups = data.frame(ears, pivot, walk, eyes) %>%   #merge() doesn't work here b/c we are joining four df's, not just two
+  select(-c(3,5,7))
+pups
+
+#########################################################################################################
+
+#The collaborator (Josie) will create a plot showing the distribution of post-natal days for each developmental landmark.
+#########################################################################################################
 ```
+The original pups data set contained ___ observations; however, there were only `r length(unique(pups_data$id))` distinct litter numbers.  As such, we assumed that the multiple entries for each pup were a result of multiple observers, each of whom uniquely recorded developmental landmarks. 
 
-## Including Plots
+unique litter numbers.  As such,  we assumed that developmental landmarks were recorded by multiple observers as reflected by the multiple entries and marginal differences in post-natal day.
 
-You can also embed plots, for example:
+###################################
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+Problem 2:  Five-thirty-eight
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+###################################
+
+
+This problem uses the 538 datasets. 
+Because this dataset is small and can be made public you should:
+  include that data file in your directory for this problem, and 
+    load that data file using relative paths.
+
+The project lead will load and tidy the data for this problem. 
+Combine the data in pols-month.csv and GDP.csv based on the date / month 
+  (use lubridate::floor_date to collapse dates to the first day of the month).
+
+The collaborator *MeOak* will create a plot showing the GDP value over time, 
+  including the party of the president in an informative aesthetic.
+
+The R Markdown document in your GitHub repository should 
+  produce a file including code and text that explains the analyses and results for this problem.
+
+
+###################################
+
+Problem 3:  Personal Website
+
+###################################
+
+Create a personal website at <YOUR_GH_NAME>.github.io. This page can be as extensive as you’d like, but it should include at least:
+
+A brief introductory landing page
+A page giving your academic and professional experience (i.e. a resume)
+Links in the site navigation for your GitHub account, your email, and any other professional networks.

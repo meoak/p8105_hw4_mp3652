@@ -110,6 +110,17 @@ The collaborator (Josie) will create a plot showing the distribution of post-nat
 ############################################################################
 
 
+<<<<<<< HEAD
+=======
+#The collaborator (Josie) will create a plot showing the distribution of post-natal days for each developmental landmark.
+#########################################################################################################
+pups %>%
+  group_by(id) %>%
+  ggplot(aes(x = ))
+  
+  
+```
+>>>>>>> 70cd31df7103dc1038afde52ff2475b988a3ea96
 The original pups data set contained ___ observations; however, there were only `r length(unique(pups_data$id))` distinct litter numbers.  As such, we assumed that the multiple entries for each pup were a result of multiple observers, each of whom uniquely recorded developmental landmarks. 
 
 unique litter numbers.  As such,  we assumed that developmental landmarks were recorded by multiple observers as reflected by the multiple entries and marginal differences in post-natal day.

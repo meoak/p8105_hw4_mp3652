@@ -5,7 +5,7 @@ date: "October 24, 2017"
 output: html_document
 ---
 
-```{r load_packages}
+```{r load_packages, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(data.table)
 library(dplyr)
@@ -36,7 +36,7 @@ clean_names(pups_data) #lowercases variable names and tibbles data
 tail(pups_data, 5) #last five
 head(pups_data) #first six
 
-```{r importing data}
+```{r importing data, warning = FALSE, message = FALSE}
 pups_data = read_csv(file = "./data/FAS_pups.csv") %>% 
   clean_names() %>% 
   select(-c(2)) %>%                             #removing sex column as key is n/a
@@ -108,6 +108,19 @@ pups
 ############################################################################
 The collaborator (Josie) will create a plot showing the distribution of post-natal days for each developmental landmark.
 ############################################################################
+
+```{r Plot, warning = FALSE, message = FALSE}
+#Josie's Collaboration
+#ridge
+pups %>%
+  gather(key = landmark, value = average_days, avg_pd_ears:avg_pd_eyes) %>%
+  ggplot(aes(y = landmark, x = average_days)) + geom_density_ridges() + 
+  labs(
+    title = "Average Days to Acheive Post-Natal Developmental Landmarks",
+    x = "Average Days",
+    y = "Developmental Landmark"
+  )
+```
 
 
 <<<<<<< HEAD

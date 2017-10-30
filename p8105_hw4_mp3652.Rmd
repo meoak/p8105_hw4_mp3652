@@ -30,11 +30,6 @@ Problem 1:  Pups
 
 ###################################
 
-getwd()
-names(pups_data) #lists variable names
-clean_names(pups_data) #lowercases variable names and tibbles data
-tail(pups_data, 5) #last five
-head(pups_data) #first six
 
 ```{r importing data, warning = FALSE, message = FALSE}
 pups_data = read_csv(file = "./data/FAS_pups.csv") %>% 
@@ -43,7 +38,8 @@ pups_data = read_csv(file = "./data/FAS_pups.csv") %>%
   arrange(litter_number)
 pups_data
 
-length(unique(pups_data$id))
+pups_data %>% 
+  count()
 
 ##############
 # avg ears
@@ -103,11 +99,13 @@ walk
 pups = data.frame(ears, pivot, walk, eyes) %>% #no merge() b/c joining 4 df's, not 2
   mutate("id" = labels(litter_number)) %>%
   select(-c(1,3,5,7)) 
-pups
+str(pups)
+
+pups %>% 
+  count()
 ```
-############################################################################
-The collaborator (Josie) will create a plot showing the distribution of post-natal days for each developmental landmark.
-############################################################################
+
+The original pups data set contained 'r pups_data %>% count()' observations; however, there were only `r pups %>% count()` distinct litter numbers.  As such, we assumed that the multiple entries for each pup were a result of multiple observers, each of whom uniquely recorded developmental landmarks. 
 
 ```{r Plot, warning = FALSE, message = FALSE}
 #Josie's Collaboration
@@ -123,83 +121,3 @@ pups %>%
 ```
 
 
-<<<<<<< HEAD
-=======
-#The collaborator (Josie) will create a plot showing the distribution of post-natal days for each developmental landmark.
-#########################################################################################################
-pups %>%
-  group_by(id) %>%
-  ggplot(aes(x = ))
-  
-  
-```
->>>>>>> 70cd31df7103dc1038afde52ff2475b988a3ea96
-The original pups data set contained ___ observations; however, there were only `r length(unique(pups_data$id))` distinct litter numbers.  As such, we assumed that the multiple entries for each pup were a result of multiple observers, each of whom uniquely recorded developmental landmarks. 
-
-unique litter numbers.  As such,  we assumed that developmental landmarks were recorded by multiple observers as reflected by the multiple entries and marginal differences in post-natal day.
-
-
-############################################################################
-
-
-
-
-
-
-
-############################################################################
-
-
-############################################################################
-In Problems 1 and 2, I worked with Josie Alford (UNI: jma2249).
-
-### Problem 1
-
-#The GitHub repo containing our solution to this problem is [here](https://github.com/meoak/p8105_hw4_mp3652)
-
-
-### Problem 2
-
-#The GitHub repo containing the solution to this problem is [here](https://github.com/josiealford14/p8105_hw4_jma2249)
-
-
-### Problem 3
-
-#My personal website is [here](http://meoakplace.com) ###need to set this up
-###################################################################
-
-
-###################################
-
-Problem 2:  Five-thirty-eight
-
-###################################
-
-
-This problem uses the 538 datasets. 
-Because this dataset is small and can be made public you should:
-  include that data file in your directory for this problem, and 
-    load that data file using relative paths.
-
-The project lead will load and tidy the data for this problem. 
-Combine the data in pols-month.csv and GDP.csv based on the date / month 
-  (use lubridate::floor_date to collapse dates to the first day of the month).
-
-The collaborator *MeOak* will create a plot showing the GDP value over time, 
-  including the party of the president in an informative aesthetic.
-
-The R Markdown document in your GitHub repository should 
-  produce a file including code and text that explains the analyses and results for this problem.
-
-
-###################################
-
-Problem 3:  Personal Website
-
-###################################
-
-Create a personal website at <YOUR_GH_NAME>.github.io. This page can be as extensive as you’d like, but it should include at least:
-
-A brief introductory landing page
-A page giving your academic and professional experience (i.e. a resume)
-Links in the site navigation for your GitHub account, your email, and any other professional networks.
